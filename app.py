@@ -11,9 +11,14 @@ def add_messages(username, message):
     now = datetime.now().strftime("%H:%M:%S")
     messages.append("({}) {}: {}".format(now, username, message))
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def index():
     """Main page with instructions"""
+    if request.method == "POST":
+        session["username"] = request.form["username"]
+    if "username" in session:
+        return redirect(session["username"])
+
     return render_template("index.html")
 
 def get_all_messages():
